@@ -1,4 +1,4 @@
-package ch.ocram.linkbasket.main
+package ch.ocram.linkbasket.main.model
 
 import com.raizlabs.android.dbflow.annotation.Database
 

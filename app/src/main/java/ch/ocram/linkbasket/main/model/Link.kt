@@ -1,4 +1,4 @@
-package ch.ocram.linkbasket.main
+package ch.ocram.linkbasket.main.model
 
 import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
@@ -14,7 +14,7 @@ class Link : BaseModel() {
     var id: Long = 0
 
     @Column
-    var createdAt: java.sql.Date = Date(System.currentTimeMillis())
+    var createdAt: Date = Date(System.currentTimeMillis())
 
     @Column
     var url : String = ""

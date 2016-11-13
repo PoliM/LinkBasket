@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import ch.ocram.linkbasket.main.model.Link
+import ch.ocram.linkbasket.main.model.LinkRepository
 import kotlinx.android.synthetic.main.activity_link_list.*
 
 /**

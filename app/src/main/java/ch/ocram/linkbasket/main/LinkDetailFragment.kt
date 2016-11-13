@@ -7,6 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import ch.ocram.linkbasket.main.model.Link
+import ch.ocram.linkbasket.main.model.LinkRepository
+import kotlinx.android.synthetic.main.activity_link_detail.*
+import kotlinx.android.synthetic.main.link_detail.*
 
 /**
  * A fragment representing a single Link detail screen.
@@ -21,7 +25,7 @@ import android.widget.TextView
 class LinkDetailFragment : Fragment() {
 
     /**
-     * The dummy content this fragment is presenting.
+     * The link this fragment is presenting.
      */
     private var mItem: Link? = null
 
@@ -29,18 +33,11 @@ class LinkDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         if (arguments.containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
             val id = arguments.getLong(ARG_ITEM_ID)
-
             mItem = LinkRepository.getById(id)
 
-            val activity = this.activity
             val appBarLayout = activity.findViewById(R.id.toolbar_layout) as CollapsingToolbarLayout
-            if (appBarLayout != null) {
-                appBarLayout.title = mItem!!.url
-            }
+            appBarLayout.title = mItem!!.url
         }
     }
 
@@ -48,7 +45,6 @@ class LinkDetailFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.link_detail, container, false)
 
-        // Show the dummy content as text in a TextView.
         if (mItem != null) {
             (rootView.findViewById(R.id.link_detail) as TextView).text = mItem!!.description
         }

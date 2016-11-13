@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import ch.ocram.linkbasket.main.model.Link
 import kotlinx.android.synthetic.main.activity_new_link.*
 import kotlinx.android.synthetic.main.content_new_link.*
 
