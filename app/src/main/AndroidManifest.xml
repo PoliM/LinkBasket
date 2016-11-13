@@ -27,6 +27,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.ocram.linkbasket.main.LinkListActivity" />
         </activity>
+        <activity
+            android:name=".NewLinkActivity"
+            android:label="@string/title_activity_new_link"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="http" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Link Basket</string>
     <string name="title_link_detail">Link Detail</string>
+    <string name="title_activity_new_link">New Link</string>
 </resources>
