@@ -3,11 +3,8 @@ package ch.ocram.linkbasket.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +12,7 @@ import android.widget.TextView
 import ch.ocram.linkbasket.main.model.Link
 import ch.ocram.linkbasket.main.model.LinkRepository
 import kotlinx.android.synthetic.main.activity_link_list.*
+
 
 /**
  * An activity representing a list of Links. This activity
@@ -40,8 +38,7 @@ class LinkListActivity : AppCompatActivity() {
         toolbar.title = title
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            sendMail()
         }
 
         val recyclerView = findViewById(R.id.link_list)!!
@@ -54,6 +51,24 @@ class LinkListActivity : AppCompatActivity() {
             // activity should be in two-pane mode.
             mTwoPane = true
         }
+    }
+
+    private fun sendMail() {
+
+        val msg = StringBuilder()
+
+        LinkRepository.getAll().forEach { link ->
+            msg.append(link.url).append('\n')
+            msg.append(link.createdAt).append(" : ").append(link.description)
+            msg.append("\n\n")
+        }
+
+        val emailApp = Intent(Intent.ACTION_SEND)
+        emailApp.putExtra(Intent.EXTRA_EMAIL, arrayOf<String>("marco.a.poli@gmail.com"))
+        emailApp.putExtra(Intent.EXTRA_SUBJECT, "Link Basket")
+        emailApp.putExtra(Intent.EXTRA_TEXT, msg.toString())
+        emailApp.type = "message/rfc822"
+        startActivity(Intent.createChooser(emailApp, "Send Email Via"))
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
