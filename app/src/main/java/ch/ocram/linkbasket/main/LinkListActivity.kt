@@ -74,7 +74,7 @@ class LinkListActivity : AppCompatActivity() {
             holder.mView.setOnClickListener { v ->
                 if (mTwoPane) {
                     val arguments = Bundle()
-                    arguments.putString(LinkDetailFragment.ARG_ITEM_ID, holder.mItem!!.url)
+                    arguments.putLong(LinkDetailFragment.ARG_ITEM_ID, holder.mItem!!.id)
                     val fragment = LinkDetailFragment()
                     fragment.arguments = arguments
                     supportFragmentManager.beginTransaction()
@@ -83,7 +83,7 @@ class LinkListActivity : AppCompatActivity() {
                 } else {
                     val context = v.context
                     val intent = Intent(context, LinkDetailActivity::class.java)
-                    intent.putExtra(LinkDetailFragment.ARG_ITEM_ID, holder.mItem!!.url)
+                    intent.putExtra(LinkDetailFragment.ARG_ITEM_ID, holder.mItem!!.id)
 
                     context.startActivity(intent)
                 }

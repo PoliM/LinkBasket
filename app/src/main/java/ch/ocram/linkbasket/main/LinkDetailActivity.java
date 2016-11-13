@@ -54,8 +54,8 @@ public class LinkDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(LinkDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(LinkDetailFragment.ARG_ITEM_ID));
+            arguments.putLong(LinkDetailFragment.Companion.getARG_ITEM_ID(),
+                    getIntent().getLongExtra(LinkDetailFragment.Companion.getARG_ITEM_ID(), -1));
             LinkDetailFragment fragment = new LinkDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

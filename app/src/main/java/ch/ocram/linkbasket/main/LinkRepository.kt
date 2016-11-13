@@ -8,7 +8,11 @@ object LinkRepository {
         return Select()
                 .from(Link::class.java)
                 .where()
-                .orderBy(Link_Table.description, false)
+                .orderBy(Link_Table.createdAt, false)
                 .queryList()
+    }
+
+    fun getById(id: Long) : Link? {
+        return Select().from(Link::class.java).where(Link_Table.id.eq(id)).querySingle();
     }
 }
