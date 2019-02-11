@@ -1,16 +1,15 @@
 package ch.ocram.linkbasket.main
 
 import android.os.Bundle
-import android.support.design.widget.CollapsingToolbarLayout
-import android.support.v4.app.Fragment
+import com.google.android.material.appbar.CollapsingToolbarLayout
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import ch.ocram.linkbasket.main.model.Link
-import ch.ocram.linkbasket.main.model.LinkRepository
-import kotlinx.android.synthetic.main.activity_link_detail.*
-import kotlinx.android.synthetic.main.link_detail.*
+import ch.ocram.linkbasket.main.model.LinkDao
+import ch.ocram.linkbasket.main.model.LinkDatabase
 
 /**
  * A fragment representing a single Link detail screen.
@@ -32,18 +31,18 @@ class LinkDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (arguments.containsKey(ARG_ITEM_ID)) {
-            val id = arguments.getLong(ARG_ITEM_ID)
-            mItem = LinkRepository.getById(id)
+        if (arguments?.containsKey(ARG_ITEM_ID) ?: false) {
+            val id = arguments!!.getLong(ARG_ITEM_ID)
+            mItem = LinkDatabase.getDatabase(context!!).linkDao().getById(id)
 
-            val appBarLayout = activity.findViewById(R.id.toolbar_layout) as CollapsingToolbarLayout
+            val appBarLayout = activity!!.findViewById(R.id.toolbar_layout) as CollapsingToolbarLayout
             appBarLayout.title = mItem!!.url
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val rootView = inflater!!.inflate(R.layout.link_detail, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val rootView = inflater.inflate(R.layout.link_detail, container, false)
 
         if (mItem != null) {
             (rootView.findViewById(R.id.link_detail) as TextView).text = mItem!!.description

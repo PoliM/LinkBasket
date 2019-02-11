@@ -3,14 +3,15 @@ package ch.ocram.linkbasket.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import ch.ocram.linkbasket.main.model.Link
-import ch.ocram.linkbasket.main.model.LinkRepository
+import ch.ocram.linkbasket.main.model.LinkDatabase
 import kotlinx.android.synthetic.main.activity_link_list.*
 
 
@@ -29,6 +30,7 @@ class LinkListActivity : AppCompatActivity() {
      * device.
      */
     private var mTwoPane: Boolean = false
+    private val simpleItemRecyclerViewAdapter = SimpleItemRecyclerViewAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +39,14 @@ class LinkListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             sendMail()
         }
 
-        val recyclerView = findViewById(R.id.link_list)!!
-        setupRecyclerView(recyclerView as RecyclerView)
+        val recyclerView = findViewById<RecyclerView>(R.id.link_list)
+        setupRecyclerView(recyclerView)
 
-        if (findViewById(R.id.link_detail_container) != null) {
+        if (findViewById<View>(R.id.link_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -57,7 +59,7 @@ class LinkListActivity : AppCompatActivity() {
 
         val msg = StringBuilder()
 
-        LinkRepository.getAll().forEach { link ->
+        this.simpleItemRecyclerViewAdapter.getLinks().forEach { link ->
             msg.append(link.url).append('\n')
             msg.append(link.createdAt).append(" : ").append(link.description)
             msg.append("\n\n")
@@ -72,10 +74,17 @@ class LinkListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(LinkRepository.getAll())
+
+        recyclerView.adapter = simpleItemRecyclerViewAdapter
+
+        LinkDatabase.getDatabase(applicationContext).linkDao().getAll().observe(this, Observer { links ->
+            links?.let { this.simpleItemRecyclerViewAdapter.setLinks(links) }
+        })
     }
 
-    inner class SimpleItemRecyclerViewAdapter(private val mValues: List<Link>) : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+    inner class SimpleItemRecyclerViewAdapter() : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+
+        private var mValues: List<Link> = emptyList()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
@@ -109,6 +118,15 @@ class LinkListActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int {
             return mValues.size
+        }
+
+        internal fun setLinks(links: List<Link>) {
+            this.mValues = links
+            notifyDataSetChanged()
+        }
+
+        internal fun getLinks(): List<Link> {
+            return this.mValues
         }
 
         inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {

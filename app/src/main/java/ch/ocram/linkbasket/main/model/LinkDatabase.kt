@@ -1,9 +1,27 @@
 package ch.ocram.linkbasket.main.model
 
-import com.raizlabs.android.dbflow.annotation.Database
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import android.content.Context
 
-@Database(name = LinkDatabase.NAME, version = LinkDatabase.VERSION)
-object LinkDatabase {
-    const val NAME ="LinkDatabase"
-    const val VERSION = 1
+
+@Database(entities = arrayOf(Link::class), version = 1)
+@TypeConverters(Converters::class)
+abstract class LinkDatabase : RoomDatabase() {
+    abstract fun linkDao(): LinkDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: LinkDatabase? = null
+
+        fun getDatabase(context: Context): LinkDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(context.applicationContext, LinkDatabase::class.java, "LinkDatabase").build()
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
 }
