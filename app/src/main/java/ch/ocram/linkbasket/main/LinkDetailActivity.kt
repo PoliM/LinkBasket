@@ -20,10 +20,10 @@ class LinkDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_link_detail)
-        val toolbar = findViewById(R.id.detail_toolbar) as Toolbar?
+        val toolbar = findViewById<Toolbar>(R.id.detail_toolbar)
         setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton?
+        val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab!!.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()

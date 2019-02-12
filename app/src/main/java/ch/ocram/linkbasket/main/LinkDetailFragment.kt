@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import ch.ocram.linkbasket.main.model.Link
-import ch.ocram.linkbasket.main.model.LinkDao
 import ch.ocram.linkbasket.main.model.LinkDatabase
 
 /**
@@ -16,10 +16,6 @@ import ch.ocram.linkbasket.main.model.LinkDatabase
  * This fragment is either contained in a [LinkListActivity]
  * in two-pane mode (on tablets) or a [LinkDetailActivity]
  * on handsets.
- */
-/**
- * Mandatory empty constructor for the fragment manager to instantiate the
- * fragment (e.g. upon screen orientation changes).
  */
 class LinkDetailFragment : Fragment() {
 
@@ -32,11 +28,12 @@ class LinkDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         if (arguments?.containsKey(ARG_ITEM_ID) ?: false) {
-            val id = arguments!!.getLong(ARG_ITEM_ID)
-            mItem = LinkDatabase.getDatabase(context!!).linkDao().getById(id)
-
             val appBarLayout = activity!!.findViewById(R.id.toolbar_layout) as CollapsingToolbarLayout
-            appBarLayout.title = mItem!!.url
+            val id = arguments!!.getLong(ARG_ITEM_ID)
+            LinkDatabase.getDatabase(context!!).linkDao().getById(id).observe(this, Observer { link ->
+                mItem = link
+                appBarLayout.title = mItem!!.url
+            })
         }
     }
 

@@ -12,7 +12,7 @@ interface LinkDao {
     fun getAll(): LiveData<MutableList<Link>>
 
     @Query("SELECT * FROM links WHERE id=:id")
-    fun getById(id: Long) : Link?
+    fun getById(id: Long) : LiveData<Link?>
 
     @Insert
     fun insert(link: Link)

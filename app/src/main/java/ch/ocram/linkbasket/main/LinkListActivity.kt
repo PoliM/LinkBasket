@@ -66,7 +66,6 @@ class LinkListActivity : AppCompatActivity() {
         }
 
         val emailApp = Intent(Intent.ACTION_SEND)
-        emailApp.putExtra(Intent.EXTRA_EMAIL, arrayOf<String>("marco.a.poli@gmail.com"))
         emailApp.putExtra(Intent.EXTRA_SUBJECT, "Link Basket")
         emailApp.putExtra(Intent.EXTRA_TEXT, msg.toString())
         emailApp.type = "message/rfc822"
@@ -82,7 +81,7 @@ class LinkListActivity : AppCompatActivity() {
         })
     }
 
-    inner class SimpleItemRecyclerViewAdapter() : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+    inner class SimpleItemRecyclerViewAdapter : RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
         private var mValues: List<Link> = emptyList()
 
@@ -130,14 +129,9 @@ class LinkListActivity : AppCompatActivity() {
         }
 
         inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-            val mIdView: TextView
-            val mContentView: TextView
+            val mIdView = mView.findViewById<TextView>(R.id.id)!!
+            val mContentView = mView.findViewById<TextView>(R.id.content)!!
             var mItem: Link? = null
-
-            init {
-                mIdView = mView.findViewById(R.id.id) as TextView
-                mContentView = mView.findViewById(R.id.content) as TextView
-            }
 
             override fun toString(): String {
                 return super.toString() + " '" + mContentView.text + "'"
